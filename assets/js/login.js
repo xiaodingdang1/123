@@ -7,7 +7,7 @@
 
 
 
-//! 1、实现去注册 跟 去登录 的切换
+// 1、实现去注册 跟 去登录 的切换
 $(function () {
   // 点击去注册账号让 登录框隐藏，注册框显示
   $("#link_reg").click(() => {
@@ -21,7 +21,7 @@ $(function () {
   });
 });
 
-//! 2、实现登录注册表单的验证
+//2、实现登录注册表单的验证
 // 从 LayUI 中获取 form 对象
 const form = layui.form;
 
@@ -30,7 +30,7 @@ form.verify({
   // 自定义一个叫 pwd 的校验规则
   pwd: [/^[\S]{6,12}$/, "密码必须6到12位，且不能出现空格"],
   // 校验两次密码是否一致的规则
-  repwd: (val) => {
+  repass: (val) => {
     // 通过形参拿到的是确认密码框中的内容
     // 还需要拿到密码框中的内容
     // 然后进行一次等于的判断
@@ -40,7 +40,7 @@ form.verify({
   },
 });
 
-//!3、发起注册的ajax请求
+//3、发起注册的ajax请求
 // 获取 layui 弹窗
 const layer = layui.layer;
 // 设置请求根路径
@@ -51,7 +51,7 @@ $("#form_reg").on("submit", (e) => {
   e.preventDefault();
   $.ajax({
     type: "POST",
-    url:"/api/reguser",
+    url:baseUrl+"/api/reguser",
     data: {
       username: $("#form_reg [name=username").val(),
       password: $("#form_reg [name=password").val(),
@@ -65,17 +65,16 @@ $("#form_reg").on("submit", (e) => {
   });
 });
 
-//! 4、发起ajax的登录请求
+// 4、发起ajax的登录请求
 // 监听登录表单，发送登录请求
 $("#form_login").submit((e) => {
   e.preventDefault();
   $.ajax({
     type: "POST",
-    url:  "/api/login",
+    url:  baseUrl+"/api/login",
     data: $("#form_login").serialize(),
     success: (res) => {
       if (res.status !== 0) return layer.msg(res.message);
-      layer.msg("登录成功！");
       // 将登录成功得到的 token 字符串，保存到 localStorage 中
       localStorage.setItem("token", res.token);
       // 跳转到主页
@@ -83,3 +82,4 @@ $("#form_login").submit((e) => {
     },
   });
 });
+
